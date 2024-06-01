@@ -1,25 +1,27 @@
-name : Deploy react application in BeanStalk
-on :
-    push:
-        branches:
-            - "main"
+name: Deploy react application in BeanStalk
+
+on:
+  push:
+    branches:
+      - "main"
+
 jobs:
-    deploy: 
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout source code
-          uses: actions/checkout@v2
+  deploy: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
-        - name: Generate deployment package
-          run: zip -r deploy.zip . -x '*.git*'
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
 
-        - name: Deploy to EB
-          uses: einaregilsson/beanstalk-deploy@v21
-          with:
-            aws_access_key: ${{ secrets.AKIA42GN2THD4PFNEXWT }}
-            aws_secret_key: ${{ secrets.ypPWPXnIGjTq9VrMC/iBOiM2jM1IB7OiqT4+3LIk }}
-            application_name: react-app
-            environment_name: React-app-env-2
-            version_label: ${{ github.sha }}
-            region: ap-south-1
-            deployment_package: deploy.zip
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: react-app
+          environment_name: React-app-env-2
+          version_label: ${{ github.sha }}
+          region: ap-south-1
+          deployment_package: deploy.zip
